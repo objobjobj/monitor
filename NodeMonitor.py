@@ -1,9 +1,11 @@
 # -*- coding:utf-8 -*-  
 import threading
+import time
 from kazoo.client import KazooClient
 from kazoo.client import KazooState
 from kazoo.exceptions import ConnectionLossException
 from kazoo.exceptions import NoAuthException
+from kazoo.handlers.threading import KazooTimeoutError
 
 #from kazoo.handlers.gevent import SequentialGeventHandler
 from collectMachineInfo import *
@@ -26,10 +28,18 @@ class NodeMonitor:
     
     def start_zk(self):
         self.zk = KazooClient(hosts=self.SERVER_IP_AND_PORT)
-        self.zk.add_listener(self._connection_listener)
-        self.zk.start();
         
-        self.zk.ensure_path("/monitorData/"+ self.NODE_ID)
+        self.zk.add_listener(self._connection_listener)
+        #self.zk.start();
+        try:
+            self.zk.start()
+        except (KazooTimeoutError):
+            print "connect fail, going to reconnect"
+            time.sleep(5.0)
+            self.start_zk()
+            
+        self.zk.ensure_path("/monitorData/"+ self.NODE_ID + "/cpu--")
+        self.zk.ensure_path("/monitorData/"+ self.NODE_ID + "/mem--")
     
     def start_update_info(self):
         t = threading.Timer(0.0, self._update_info)
