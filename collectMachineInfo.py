@@ -7,18 +7,17 @@ import time
 static_all_info = {}
 static_all_info["cpu_percent"] = []
 static_all_info["virtual_memory"] = []
+static_max_length = 60
 
 class CollectMachineInfo:
-    
-    def __init__(self):
-        self.count = 0
 
     def collectInfo(self):
-        if self.count <= 3:
-            static_all_info["cpu_percent"].append(self._get_timestamp() + "\t" + self._get_cpu_percent())
-            static_all_info["virtual_memory"].append(self._get_timestamp() + "\t" + self._get_virtual_memory())
-            self.count++
-        else:
+        if len(static_all_info["cpu_percent"]) > static_max_length:
+            static_all_info["cpu_percent"] = static_all_info["cpu_percent"][1:len(static_all_info["cpu_percent"])]
+            #static_all_info["virtual_memory"].append(self._get_timestamp() + "\t" + self._get_virtual_memory())
+
+    	static_all_info["cpu_percent"].append(self._get_timestamp() + "\t" + self._get_cpu_percent())
+        #static_all_info["virtual_memory"].append(self._get_timestamp() + "\t" + self._get_virtual_memory())
         return json.dumps(static_all_info)
         
     def _get_virtual_memory(self):
