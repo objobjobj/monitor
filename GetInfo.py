@@ -2,10 +2,18 @@
 from kazoo.client import KazooClient
 import json
 
+##
+##                 -----                                  |----   cpu_precent
+#  all_info struct|
+#                  -----  Virutal Machine Mac Address ----|----   virtual_memory
+#                 |
+#                  -----
+##
+##
 class GetInfo:
     def __init__(self):
         self.all_info = {}
-        self.SERVER_IP_AND_PORT = "localhost:2181"
+        self.SERVER_IP_AND_PORT = "172.18.229.251:2181"
         self.zk = None
     
     def start_zk(self):
@@ -17,13 +25,17 @@ class GetInfo:
         node_nums = len(children)
         for i in range(node_nums):
             data, stat = self.zk.get("/monitorData/" + str(children[i]))
-            print data
+            #print data
+            #print str(children[i])
+            #print json.loads(data.decode("utf-8"))
             self.all_info[children[i]] = json.loads(data.decode("utf-8"))
-        return self.all_info
+            #print self.all_info
+        #return self.all_info
         
 
 
 if __name__ == "__main__":
     gi = GetInfo()
     gi.start_zk();
-    print gi.getInfo()
+    gi.getInfo()
+    print gi.all_info

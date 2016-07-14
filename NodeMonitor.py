@@ -1,6 +1,8 @@
 # -*- coding:utf-8 -*-  
 import threading
 import time
+import socket
+import uuid
 from kazoo.client import KazooClient
 from kazoo.client import KazooState
 from kazoo.exceptions import ConnectionLossException
@@ -17,15 +19,22 @@ from collectMachineInfo import *
 #      : "auth": doesn't use any id, represents any authenticated user.
 #ZOO_OPEN_ACL_UNSAFE = {"perms":0x1f, "scheme":"world", "id" :"anyone"}
 
+def get_mac_address(): 
+    mac = uuid.UUID(int = uuid.getnode()).hex[-12:] 
+    return ":".join([mac[e:e+2] for e in range(0,11,2)])
+
+
 class NodeMonitor:
-    STATIC_NODE_ID = 0
+	# use mac address to divide different virtual machine
+    STATIC_NODE_MAC_ADDRESS = get_mac_address()
     global t
     def __init__(self):
         self.zk = None
-        self.SERVER_IP_AND_PORT = "localhost:2181"
-        self.NODE_ID = str(NodeMonitor.STATIC_NODE_ID)
-        NodeMonitor.STATIC_NODE_ID += 1 
-    
+        self.SERVER_IP_AND_PORT = "172.18.229.251:2181"
+        #STATIC_NODE_MAC_ADDRESS = get_mac_address()
+        self.NODE_ID = str(NodeMonitor.STATIC_NODE_MAC_ADDRESS)
+        print self.NODE_ID
+
     def start_zk(self):
         self.zk = KazooClient(hosts=self.SERVER_IP_AND_PORT)
         
@@ -38,8 +47,7 @@ class NodeMonitor:
             time.sleep(5.0)
             self.start_zk()
             
-        self.zk.ensure_path("/monitorData/"+ self.NODE_ID + "/cpu--")
-        self.zk.ensure_path("/monitorData/"+ self.NODE_ID + "/mem--")
+        self.zk.ensure_path("/monitorData/"+ self.NODE_ID)
     
     def start_update_info(self):
         t = threading.Timer(0.0, self._update_info)
@@ -70,7 +78,7 @@ class NodeMonitor:
     def _update_info(self):
         print "begin to update"
         self._update_info_once()
-        t = threading.Timer(5.0, self._update_info)
+        t = threading.Timer(3.0, self._update_info)
         t.start()
         
 
