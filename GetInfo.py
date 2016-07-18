@@ -41,5 +41,5 @@ if __name__ == "__main__":
     gi.start_zk()
 
     rrdDraw = RRDDraw(gi.getInfo())
-    
+    rrdDraw.draw()
 
