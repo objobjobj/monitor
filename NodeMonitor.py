@@ -36,7 +36,7 @@ class NodeMonitor:
         print self.NODE_ID
 
     def start_zk(self):
-        self.zk = KazooClient(hosts=self.SERVER_IP_AND_PORT)
+        self.zk = KazooClient("172.18.229.251:2181")
         
         self.zk.add_listener(self._connection_listener)
         #self.zk.start();
@@ -56,6 +56,7 @@ class NodeMonitor:
     
     def _update_info_once(self):
         cmi = CollectMachineInfo()
+        #print cmi.collectInfo()
         async_obj = self.zk.set_async("/monitorData/"+ self.NODE_ID, (cmi.collectInfo()).encode(encoding="utf-8"))
         async_obj.rawlink(self._update_info_callback)
     

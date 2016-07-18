@@ -1,6 +1,7 @@
 # -*- coding:utf-8 -*- 
 from kazoo.client import KazooClient
 import json
+from rrdDraw import *
 
 ##
 ##                 -----                                  |----   cpu_precent
@@ -31,12 +32,13 @@ class GetInfo:
             self.all_info[children[i]] = json.loads(data.decode("utf-8"))
             for key in self.all_info[children[i]].keys():
                 print self.all_info[children[i]][key]
-        #return self.all_info
+        return self.all_info
         
 
 
 if __name__ == "__main__":
     gi = GetInfo()
-    gi.start_zk();
-    gi.getInfo()
+    _rrdDraw = rrdDraw();
+    gi.start_zk()
+    #_rrdDraw.draw(gi.getInfo())
     #print gi.all_info
