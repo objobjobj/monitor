@@ -1,7 +1,7 @@
 # -*- coding:utf-8 -*- 
 from kazoo.client import KazooClient
 import json
-import RRDDraw
+from RRDDrawDir.RRDDraw import RRDDraw
 
 
 ##
@@ -34,26 +34,12 @@ class GetInfo:
             #for key in self.all_info[children[i]].keys():
             #    print self.all_info[children[i]][key]
         return self.all_info
-        
-    def decodeInfo(self):
-        #print self.all_info.keys()
-        for mac_key in self.all_info.keys():
-            mac_address = mac_key
-            #print self.all_info[mac_address].keys()
-            for key in self.all_info[mac_address].keys():
-                print key
-                if key == "cpu_percent":
-                    print self.all_info[mac_address][key]
-                if key == "virtual_memory":
-                    print self.all_info[mac_address][key]
 
 
 if __name__ == "__main__":
     gi = GetInfo()
     gi.start_zk()
-    gi.getInfo()
 
-    rrdDraw = RRDDraw
+    rrdDraw = RRDDraw(gi.getInfo())
+    
 
-    #_rrdDraw.draw(gi.getInfo())
-    #print gi.all_info
