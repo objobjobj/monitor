@@ -1,6 +1,8 @@
 # -*- coding:utf-8 -*- 
 from kazoo.client import KazooClient
 import json
+import RRDDraw
+
 
 ##
 ##                 -----                                  |----   cpu_precent
@@ -50,6 +52,8 @@ if __name__ == "__main__":
     gi = GetInfo()
     gi.start_zk()
     gi.getInfo()
-    gi.decodeInfo()
+
+    rrdDraw = RRDDraw
+
     #_rrdDraw.draw(gi.getInfo())
     #print gi.all_info
