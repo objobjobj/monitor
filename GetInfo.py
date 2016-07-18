@@ -1,14 +1,13 @@
 # -*- coding:utf-8 -*- 
 from kazoo.client import KazooClient
 import json
-from rrdDraw import *
 
 ##
 ##                 -----                                  |----   cpu_precent
 #  all_info struct|
 #                  -----  Virutal Machine Mac Address ----|----   virtual_memory
 #                 |
-#                  -----
+#                  -----    
 ##
 ##
 class GetInfo:
@@ -30,15 +29,27 @@ class GetInfo:
             #print str(children[i])
             #print json.loads(data.decode("utf-8"))
             self.all_info[children[i]] = json.loads(data.decode("utf-8"))
-            for key in self.all_info[children[i]].keys():
-                print self.all_info[children[i]][key]
+            #for key in self.all_info[children[i]].keys():
+            #    print self.all_info[children[i]][key]
         return self.all_info
         
+    def decodeInfo(self):
+        #print self.all_info.keys()
+        for mac_key in self.all_info.keys():
+            mac_address = mac_key
+            #print self.all_info[mac_address].keys()
+            for key in self.all_info[mac_address].keys():
+                print key
+                if key == "cpu_percent":
+                    print self.all_info[mac_address][key]
+                if key == "virtual_memory":
+                    print self.all_info[mac_address][key]
 
 
 if __name__ == "__main__":
     gi = GetInfo()
-    _rrdDraw = rrdDraw();
     gi.start_zk()
+    gi.getInfo()
+    gi.decodeInfo()
     #_rrdDraw.draw(gi.getInfo())
     #print gi.all_info

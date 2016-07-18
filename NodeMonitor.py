@@ -42,6 +42,7 @@ class NodeMonitor:
         #self.zk.start();
         try:
             self.zk.start()
+            #print "zk-start-try"
         except (KazooTimeoutError):
             print "connect fail, going to reconnect"
             time.sleep(5.0)
@@ -56,7 +57,7 @@ class NodeMonitor:
     
     def _update_info_once(self):
         cmi = CollectMachineInfo()
-        #print cmi.collectInfo()
+        #print self.NODE_ID
         async_obj = self.zk.set_async("/monitorData/"+ self.NODE_ID, (cmi.collectInfo()).encode(encoding="utf-8"))
         async_obj.rawlink(self._update_info_callback)
     
@@ -78,6 +79,7 @@ class NodeMonitor:
     
     def _update_info(self):
         print "begin to update"
+        self.zk.ensure_path("/monitorData/"+ self.NODE_ID)
         self._update_info_once()
         t = threading.Timer(3.0, self._update_info)
         t.start()

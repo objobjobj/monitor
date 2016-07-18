@@ -16,8 +16,8 @@ class CollectMachineInfo:
             static_all_info["cpu_percent"] = static_all_info["cpu_percent"][1:len(static_all_info["cpu_percent"])]
             #static_all_info["virtual_memory"].append(self._get_timestamp() + "\t" + self._get_virtual_memory())
 
-    	static_all_info["cpu_percent"].append(self._get_timestamp() + "\t" + self._get_cpu_percent())
-        static_all_info["virtual_memory"].append(self._get_timestamp() + "\t" + self._get_virtual_memory())
+    	static_all_info["cpu_percent"].append({self._get_timestamp():self._get_cpu_percent()})
+        static_all_info["virtual_memory"].append({self._get_timestamp():self._get_virtual_memory()})
         return json.dumps(static_all_info)
         
     def _get_virtual_memory(self):
