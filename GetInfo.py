@@ -28,6 +28,8 @@ class GetInfo:
         node_nums = len(children)
         for i in range(node_nums):
             data, stat = self.zk.get("/monitorData/" + str(children[i]))
+            data2, stat2 = self.zk.get("/monitorDataJustOneTime/" + str(children[i]))
+            print json.loads(data2.decode("utf-8"))
             #print data
             #print str(children[i])
             #print json.loads(data.decode("utf-8"))

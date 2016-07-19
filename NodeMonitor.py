@@ -86,10 +86,18 @@ class NodeMonitor:
         t = threading.Timer(3.0, self._update_info)
         t.start()
         
+    def _update_info_just_one_time(self):
+    	print "just one time to update"
+    	self.zk.ensure_path("/monitorDataJustOneTime/"+ self.NODE_ID)
+    	cmi_just_one_time = CollectMachineInfo()
+    	async_obj_just_one_time = self.zk.set_async("/monitorDataJustOneTime/"+ self.NODE_ID,
+    		(cmi_just_one_time.collectInfoJustOneTime()).encode(encoding="utf-8"))
+        async_obj_just_one_time.rawlink(self._update_info_callback)
 
 if __name__ == "__main__":
     nm = NodeMonitor()
     nm.start_zk()
+    nm._update_info_just_one_time()
     nm.start_update_info()
     
         

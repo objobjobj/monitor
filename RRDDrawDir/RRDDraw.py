@@ -18,6 +18,7 @@ static_gauge_calculate_type = 'GAUGE'
 static_max_num = 100000
 static_pic_formate = '.png'
 
+# for the data-set name must be short, use a dict to short the key words
 static_short_key = {"cpu_percent" : "cpup", "virtual_memory" : "vmem",
     "net_io" : "net"}
 
@@ -40,8 +41,9 @@ class RRDDraw(object):
         rrdtool.create(static_basic_path + str(name) + '.rrd',
             '--start', str(start_time),
             '--step', str(static_step),
-            'DS:' + str(name) + '_sent' + ':' + calculate_type + ':' + str(static_step * 2) + ':U:U',
-            'DS:' + str(name) + '_recv' + ':' + calculate_type + ':' + str(static_step * 2) + ':U:U',
+            # _s is net_io_sent, _r is net_io_recv
+            'DS:' + str(name) + '_s' + ':' + calculate_type + ':' + str(static_step * 2) + ':U:U',
+            'DS:' + str(name) + '_r' + ':' + calculate_type + ':' + str(static_step * 2) + ':U:U',
             'RRA:AVERAGE:0.5:1:' + str(static_max_num)
             )
 
@@ -69,6 +71,22 @@ class RRDDraw(object):
             '--end', end_time,
             'DEF:' + y1_name + '=' + static_basic_path + str(name) + '.rrd' + ':' + str(name) + ':AVERAGE',
             'AREA:' +y1_name + '#00FF00'
+            )
+        return
+
+    def graphRRD_net_io(self, name, start_time, end_time):
+        # _s is net_io_sent, _r is net_io_recv
+        sent_name = str(name) + '_s'
+        recv_name = str(name) + '_r'
+        
+        rrdtool.graph(static_basic_path + str(name) + static_pic_formate,
+            '--step', str(static_step),
+            '--start', start_time,
+            '--end', end_time,
+            'DEF:' + sent_name + '=' + static_basic_path + str(name) + '.rrd' + ':' + str(name) + '_s'  + ':AVERAGE',
+            'DEF:' + recv_name + '=' + static_basic_path + str(name) + '.rrd' + ':' + str(name) + '_r'  + ':AVERAGE',
+            'LINE1:' +sent_name + '#00FF00:net_sent',
+            'LINE1:' +recv_name + '#FF0000:net_recv',
             )
         return
 
@@ -151,5 +169,18 @@ class RRDDraw(object):
 
                 if key == "net_io":
                     ###create rrd file
+                    self.createRRD_net_io(rrdname, str(start_time), static_counter_calculate_type)
 
-                    print self.all_info[mac_address][key]
+                    ###update rrd item
+                    for infos in self.all_info[mac_address][key]:
+                        #print infos
+                        time_stamp = infos.keys()[0]
+                        info = infos[time_stamp]
+                        item = time_stamp + ':' + info
+                        #print item
+                        self.updateRRD(rrdname, item)
+
+                    ###graph the rrd picture
+                    self.graphRRD_net_io(rrdname, str(start_time), str(end_time))
+
+                    #print self.all_info[mac_address][key]
