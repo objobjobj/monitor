@@ -14,12 +14,17 @@ static_max_length = 60
 ## just get info once time
 static_all_info_just_one_time = {}
 static_all_info_just_one_time["cpu_count"] = []
+static_all_info_just_one_time["disk_usage"] = []
+static_all_info_just_one_time["users"] = []
 
 
 class CollectMachineInfo:
 
     def collectInfoJustOneTime(self):
         static_all_info_just_one_time["cpu_count"].append(self._get_cpu_count())
+        static_all_info_just_one_time["disk_usage"].append(self._get_disk_usage())
+        static_all_info_just_one_time["users"].append(self._get_users())
+
         return json.dumps(static_all_info_just_one_time)
 
 
@@ -35,9 +40,15 @@ class CollectMachineInfo:
         static_all_info["net_io"].append({self._get_timestamp():self._get_net_io_sent()+':'+self._get_net_io_recv()})
         return json.dumps(static_all_info)
 
+    def _get_users(self):
+        return str(psutil.users())
+
     def _get_cpu_count(self):
         return str(psutil.cpu_count())
         
+    def _get_disk_usage(self):
+        return str(psutil.disk_usage('/'))
+
     def _get_virtual_memory(self):
     	return str(psutil.virtual_memory())
     
