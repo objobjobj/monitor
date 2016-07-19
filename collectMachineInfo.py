@@ -7,6 +7,7 @@ import time
 static_all_info = {}
 static_all_info["cpu_percent"] = []
 static_all_info["virtual_memory"] = []
+static_all_info["net_io"] = []
 static_max_length = 60
 
 class CollectMachineInfo:
@@ -18,6 +19,7 @@ class CollectMachineInfo:
 
     	static_all_info["cpu_percent"].append({self._get_timestamp():self._get_cpu_percent()})
         static_all_info["virtual_memory"].append({self._get_timestamp():self._get_virtual_memory()})
+        static_all_info["net_io"].append({self._get_timestamp():self._get_net_io_sent()+':'+self._get_net_io_recv()})
         return json.dumps(static_all_info)
         
     def _get_virtual_memory(self):
@@ -25,6 +27,12 @@ class CollectMachineInfo:
     
     def _get_cpu_percent(self):
         return str(psutil.cpu_percent(interval=1, percpu=True))
+
+    def _get_net_io_sent(self):
+        return str(psutil.net_io_counters().bytes_sent)
+
+    def _get_net_io_recv(self):
+        return str(psutil.net_io_counters().bytes_recv)
 
     def _get_timestamp(self):
     	return str(int(time.time()))

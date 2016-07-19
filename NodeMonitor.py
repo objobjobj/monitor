@@ -30,12 +30,14 @@ class NodeMonitor:
     global t
     def __init__(self):
         self.zk = None
+        #self.SERVER_IP_AND_PORT = "127.0.0.1:2181"
         self.SERVER_IP_AND_PORT = "172.18.229.251:2181"
         #STATIC_NODE_MAC_ADDRESS = get_mac_address()
         self.NODE_ID = str(NodeMonitor.STATIC_NODE_MAC_ADDRESS)
         print self.NODE_ID
 
     def start_zk(self):
+        #self.zk = KazooClient("127.0.0.1:2181")
         self.zk = KazooClient("172.18.229.251:2181")
         
         self.zk.add_listener(self._connection_listener)

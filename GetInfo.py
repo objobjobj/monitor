@@ -7,14 +7,15 @@ from RRDDrawDir.RRDDraw import RRDDraw
 ##
 ##                 -----                                  |----   cpu_precent
 #  all_info struct|
-#                  -----  Virutal Machine Mac Address ----|----   virtual_memory
+#                  -----  Virutal Machine Mac Address ----|----   virtual_memory    |---  net_io_sent
 #                 |
-#                  -----    
+#                  -----                                  |----   net_io     -------|---  net_io_recv
 ##
 ##
 class GetInfo:
     def __init__(self):
         self.all_info = {}
+        #self.SERVER_IP_AND_PORT = "127.0.0.1:2181"
         self.SERVER_IP_AND_PORT = "172.18.229.251:2181"
         self.zk = None
     
