@@ -11,6 +11,7 @@ from kazoo.handlers.threading import KazooTimeoutError
 
 #from kazoo.handlers.gevent import SequentialGeventHandler
 from collectMachineInfo import *
+from CollectProcessInfo import CollectProcessInfo
 
 
 #perms: read:1<<0; write:1<<1; create:1<<2; delete:1<<3; admin:1<<4
@@ -55,7 +56,9 @@ class NodeMonitor:
     def start_update_info(self):
         t = threading.Timer(0.0, self._update_info)
         t.start()
-        
+
+        t2 = threading.Timer(0.0, self._update_info_10_second_once_time)
+        t2.start()
     
     def _update_info_once(self):
         cmi = CollectMachineInfo()
@@ -85,7 +88,19 @@ class NodeMonitor:
         self._update_info_once()
         t = threading.Timer(3.0, self._update_info)
         t.start()
+
+    def _update_info_10_second_once_time(self):
+    	self.zk.ensure_path("/monitorDataProcessInfo/"+ self.NODE_ID)
+        self._update_info_once_10_second()
+        t = threading.Timer(10.0, self._update_info_10_second_once_time)
+        t.start()    	
         
+    def _update_info_once_10_second(self):
+    	cpi = CollectProcessInfo()
+        #print self.NODE_ID
+        async_obj = self.zk.set_async("/monitorDataProcessInfo/"+ self.NODE_ID, (cpi._get_process_info()).encode(encoding="utf-8"))
+        async_obj.rawlink(self._update_info_callback)
+
     def _update_info_just_one_time(self):
     	print "just one time to update"
     	self.zk.ensure_path("/monitorDataJustOneTime/"+ self.NODE_ID)

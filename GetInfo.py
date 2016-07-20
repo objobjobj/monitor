@@ -2,7 +2,7 @@
 from kazoo.client import KazooClient
 import json
 from RRDDrawDir.RRDDraw import RRDDraw
-
+from GetProcessInfo import GetProcessInfo
 
 ##
 ##                 -----                                  |----   cpu_precent
@@ -29,20 +29,25 @@ class GetInfo:
         for i in range(node_nums):
             data, stat = self.zk.get("/monitorData/" + str(children[i]))
             data2, stat2 = self.zk.get("/monitorDataJustOneTime/" + str(children[i]))
-            print json.loads(data2.decode("utf-8"))
-            #print data
+            #print json.loads(data2.decode("utf-8"))
+            print data2
+            data3, stat3 = self.zk.get("/monitorDataProcessInfo/" + str(children[i]))
+            print data3
             #print str(children[i])
             #print json.loads(data.decode("utf-8"))
             self.all_info[children[i]] = json.loads(data.decode("utf-8"))
-            #for key in self.all_info[children[i]].keys():
-            #    print self.all_info[children[i]][key]
+            for key in self.all_info[children[i]].keys():
+                print key
+                print self.all_info[children[i]][key]
+            #print self.all_info
         return self.all_info
 
 
 if __name__ == "__main__":
     gi = GetInfo()
     gi.start_zk()
+    gi.getInfo()
 
-    rrdDraw = RRDDraw(gi.getInfo())
-    rrdDraw.draw()
+    #rrdDraw = RRDDraw(gi.getInfo())
+    #rrdDraw.draw()
 
