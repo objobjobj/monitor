@@ -13,11 +13,12 @@ class CollectProcessInfo:
 		res_process = []
 
 		for item in result:
-		  if str.isdigit(item.split()[2]) == False:
+		  if len(item.split()) < 3 or str.isdigit(item.split()[2]) == False:
 		  	continue
 		  id = int(item.split()[2])
 		  proc = psutil.Process(pid = id)
 		  res_process.append(proc.as_dict(attrs=['pid', 'name', 'username']))
 
+		print res_process
 		return json.dumps(res_process)
 
