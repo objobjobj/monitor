@@ -41,12 +41,13 @@ class CollectMachineInfo:
         static_all_info["virtual_memory"] = {self._get_timestamp():self._get_virtual_memory()}
         static_all_info["swap_memory"] = {self._get_timestamp():self._get_swap_memory()}
         static_all_info["disk_io"] = {self._get_timestamp():self._get_disk_io()}
+        static_all_info["disk_usage"] = {self._get_timestamp():self._get_disk_usage()}
         static_all_info["net_io_sent"] = {self._get_timestamp():self._get_net_io_sent()}
         static_all_info["net_io_recv"] = {self._get_timestamp():self._get_net_io_recv()}
         return json.dumps(static_all_info)
 
     def _get_users(self):
-        return str(psutil.users())
+        return str(psutil.users()[0])
 
     def _get_cpu_count(self):
         return str(psutil.cpu_count())
