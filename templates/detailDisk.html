@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ computer_name }} 资源监控</title>
+    <meta charset="utf-8">
+    <link href={{ static_url("css/boostrap.css") }} rel="stylesheet">
+    <link href={{ static_url('css/main.css') }} rel="stylesheet">
+    <script src={{ static_url('js/jquery-3.0.0.js') }}></script>
+    <script src={{ static_url('js/bootstrap.js') }}></script>
+    <script src={{ static_url('js/highcharts.js') }}></script>
+    <script src={{ static_url('js/detailDisk.js') }}></script>
+
+</head>
+<body>
+<div id="container">
+    <div class="top_bar">
+        <span class="brand"> Monitor System  </span>
+    </div>
+
+    <div id="content"> 
+        <div id="left_bar">
+            <ul class="nav nav-pills nav-stacked">
+                <li><a href="/machine/{{ computer_name }}/cpu">CPU资源监控</a></li>
+                <li><a href="/machine/{{ computer_name }}/memory">内存资源监控</a></li>
+                <li><a href="/machine/{{ computer_name }}/disk">磁盘资源监控</a></li>
+                <li><a href="/machine/{{ computer_name }}/network">网络资源监控</a></li>
+                <li><a href="/machine/{{ computer_name }}/daemon">守护进程监控</a></li>
+                <li><a href="/machines">返回总览页</a></li>
+            </ul>
+        </div>
+
+        <div class="main_content">
+            <div class="page-header">
+                <h2>{{ computer_name }} 资源监控</h2>
+            </div>
+
+            <div class="detail-content">
+                <h2 class="detail-title">磁盘</h2>
+                <div class="img-div" id="disk-charts">
+                    
+                </div>
+
+                <div class="data-ul-div">
+                    <ul id="disk-static-data-ul" class="row-list">
+                        <li>总空间: <span id="disk-total">10%</span></li>
+                        <li>已用: <span id="disk-used">10%</span></li>
+                        <li>空闲: <span id="disk-free">10%</span></li>
+                        <li>已用比例: <span id="disk-used-percent">10%</span></li>
+                    </ul>
+                </div>
+
+                <div class="data-ul-div">
+                    <ul id="disk-speed-ul" class="row-list">
+                        <li>写速度: <span id="write-speed">10%</span></li>
+                        <li>读速度: <span id="read-speed">10%</span></li>
+                    </ul>
+                </div>
+            </div>
+
+            
+        </div>
+
+
+
+    </div>
+<script type="text/javascript">
+
+</script>
+
+</div>
+</body>
+</html>

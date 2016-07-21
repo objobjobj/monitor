@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>资源监控</title>
+    <meta charset="utf-8">
+    <link href={{ static_url("css/boostrap.css") }} rel="stylesheet">
+    <link href={{ static_url('css/main.css') }} rel="stylesheet">
+    <script src={{ static_url('js/jquery-3.0.0.js') }}></script>
+    <script src={{ static_url('js/bootstrap.js') }}></script>
+
+</head>
+<body>
+<div id="container">
+    <div class="top_bar">
+        <span class="brand"> Monitor System  </span>
+    </div>
+
+    <div id="content"> 
+        <div id="left_bar">
+            <ul class="nav nav-pills nav-stacked">
+                <li><a href="/">虚拟机管理器</a></li>
+                <li><a href="/instances">虚拟机实例</a></li>
+                <li><a href="/machines">资源监控</a></li>
+            </ul>
+        </div>
+
+        <div class="main_content">
+            <div class="page-header">
+                <h2>硬件资源监控</h2>
+            </div>
+
+            <div class="table_wrapper">
+                <table id="hypervisors" class="table table-bordered table-striped">
+                    <thead>
+                        <tr class="table_caption">
+                            <th class="table_header" colspan="6">
+                                <h3 class="table_header">硬件资源使用情况</h3>
+                            </th>
+                        </tr>
+                        <tr>
+                            <th class="sortable normal_column">类型</th>
+                            <th class="sortable normal_column">主机</th>
+                            <th class="sortable normal_column">CPU利用率(%)</th>
+                            <th class="sortable normal_column">内存利用率(%)</th>
+                            <th class="sortable normal_column">磁盘利用率(%)</th>
+                            <th class="sortable normal_column">上传网速(Bps)</th>
+                            <th class="sortable normal_column">下载网速(Bps)</th>
+                            <th class="sortable normal_column">状态</th>
+                            <th class="sortable normal_column">更多</th>
+
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% import json %}
+                        {% set count = 0 %}
+                        {%for item in general_info%}
+                        {% set item_temp = json.loads(general_info[item]) %}
+                        {% set count = count + 1 %}
+                        <tr>
+                            {% if item_temp["is_server"] == "True" %}
+                            <td class="sortable normal_column">服务器</td>
+                            {% else %}
+                            <td class="sortable normal_column">虚拟机</td>
+                            {% end %}
+                            <td class="sortable normal_column">{{ item_temp["ip"] }}</td>
+                            <td class="sortable normal_column">{{ item_temp["cpu_percent_average"] }}</td>
+                            <td class="sortable normal_column">{{ item_temp["memory_percent"] }}</td>
+                            <td class="sortable normal_column">{{ item_temp["disk_percent"] }}</td>
+                            <td class="sortable normal_column">{{ item_temp["net_io_sent"] }}</td>
+                            <td class="sortable normal_column">{{ item_temp["net_io_recv"] }}</td>
+                            <td class="sortable normal_column">{{ item_temp["status"] }}</td>
+                            <td class="sortable normal_column">
+                                <a href="machine/{{ item_temp['ip'] }}/cpu">详情&nbsp;&gt&gt</a>
+                            </td>
+                        </tr>
+                        {% end %}
+                    </tbody>
+
+                    <tfoot>
+                        <tr>
+                            <td colspan="8">
+                                <span class="table_count">显示{{ count }}个条目</span>
+                            </td>
+                        </tr>
+                    </tfoot>
+
+                </table>
+            </div>
+        </div>
+
+
+
+    </div>
+<script type="text/javascript">
+
+</script>
+
+</div>
+</body>
+</html>

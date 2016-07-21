@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>虚拟机管理器</title>
+    <meta charset="utf-8">
+
+    <link href={{ static_url("css/boostrap.css") }} rel="stylesheet">
+    <link href={{ static_url('css/main.css') }} rel="stylesheet">
+    <script src={{ static_url('js/jquery-3.0.0.js') }}></script>
+    <script src={{ static_url('js/bootstrap.js') }}></script>
+    <script src={{ static_url('js/highcharts.js') }}></script>
+    <script src={{ static_url('js/draws-pie.js') }}></script>
+
+</head>
+<body>
+<div id="container">
+    <div class="top_bar">
+        <span class="brand"> Monitor System  </span>
+    </div>
+
+    <div id="content"> 
+        <div id="left_bar">
+            <ul class="nav nav-pills nav-stacked">
+                <li><a href="/">虚拟机管理器</a></li>
+                <li><a href="/instances">虚拟机实例</a></li>
+                <li><a href="/machines">资源监控</a></li>
+            </ul>
+        </div>
+
+        <div class="main_content">
+            <div class="page-header">
+                <h2>虚拟机管理器</h2>
+            </div>
+
+            <div class="quota-dynamic">
+                <h3>虚拟机管理器概述</h3>
+                <div class="d3_quota_bar">
+                    <div class="d3_pie_chart_usage" data-used="38" id="core-pie"></div>
+                    <strong>虚拟内核使用情况 <br>
+                        <span id="total-core"> 16 </span>中的<span id="total-used-core"> 6 </span>已使用
+                    </strong>
+                </div>
+
+                <div class="d3_quota_bar">
+                    <div class="d3_pie_chart_usage" data-used="80" id="memory-pie"></div>
+                    <strong>内存使用情况 <br />
+                        <span id="total-memory"> 15.7GB </span>中的<span id="total-used-memory"> 12.5GB </span>已使用
+                    </strong>
+                </div>
+
+                <div class="d3_quota_bar">
+                    <div class="d3_pie_chart_usage" data-used="2" id="disk-pie"></div>
+                    <strong>磁盘使用情况 <br />
+                        <span id="total-disk"> 7.2TB </span>中的<span id="total-used-disk"> 120.0GB </span>已使用
+                    </strong>
+                </div>
+            </div>
+
+            <div class="table_wrapper">
+                <table id="hypervisors" class="table table-bordered table-striped">
+                    <thead>
+                        <tr class="table_caption">
+                            <th class="table_header" colspan="8">
+                                <h3 class="table_header">虚拟机管理器</h3>
+                            </th>
+                        </tr>
+                        <tr>
+                            <th class="sortable normal_column">主机名</th>
+                            <th class="sortable normal_column">虚拟内核(总计)</th>
+                            <th class="sortable normal_column">虚拟内核(已用)</th>
+                            <th class="sortable normal_column">内存(总计)</th>
+                            <th class="sortable normal_column">内存(已用)</th>
+                            <th class="sortable normal_column">存储(总计)</th>
+                            <th class="sortable normal_column">存储(已用)</th>
+                            <th class="sortable normal_column">实例</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% import json %}
+                        {%for item in instance_info%}
+                        {% set item_temp = json.loads(instance_info[item]) %}
+                        {% if item_temp["is_server"] == "True" %}
+                        <tr>
+                            <td class="sortable normal_column" id="server-name">{{ item_temp["user"] }}</td>
+                            <td class="sortable normal_column" id="total-core-td">{{ item_temp["cpu_count"] }}</td>
+                            <td class="sortable normal_column" id="used-core-td">{{ item_temp["cpu_count_used"] }}</td>
+                            <td class="sortable normal_column" id="total-memory-td">{{ item_temp["virtual_memory_total"] }} GB</td>
+                            <td class="sortable normal_column" id="used-memory-td">{{ item_temp["virtual_memory_used"] }} GB</td>
+                            <td class="sortable normal_column" id="total-disk-td">{{ item_temp["disk_total"] }} GB</td>
+                            <td class="sortable normal_column" id="used-disk-td">{{ item_temp["disk_used"] }} GB</td>
+                            <td class="sortable normal_column" id="virtual-machne-num-td">{{ item_temp["instance_count"] }}</td>
+                        </tr>
+                        {% end if %}
+                        {% end %}
+                    </tbody>
+
+                    <tfoot>
+                        <tr>
+                            <td colspan="8">
+                                <span class="table_count">显示1个条目</span>
+                            </td>
+                        </tr>
+                    </tfoot>
+
+                </table>
+            </div>
+        </div>
+
+
+
+    </div>
+<script type="text/javascript">
+$(document).ready(function() {
+    draw_pie("#core-pie", 70.0);
+    draw_pie("#memory-pie", 70.0);
+    draw_pie("#disk-pie", 70.0);
+});
+</script>
+
+</div>
+</body>
+</html>

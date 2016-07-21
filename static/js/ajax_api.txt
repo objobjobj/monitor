@@ -1,0 +1,106 @@
+-> briefmonitor.html
+   |- [general dynamic information] -|
+   【Request】
+        GET /machines/request
+            eg. /machines/request
+        req-args:
+            none
+   【Response】
+        Error: 'Bad Request'
+        Success: return json format data with encoding 'utf-8'
+            format: {ip: {info}, ip: {info}, ip: {info}, ...}
+            info detail:
+                - time: xxxx-xx-xx xx:xx:xx (x -> number digit, eg. 2016-09-01 19:00:00)
+                - status: [active|negative] (represent whether the machine is active)
+                - is_server: ['True'|'False'] (represent whether the machine is the server)
+                - ip: xxx.xxx.xxx.xxx (x -> number digit, eg. 192.18.22.1)
+                - cpu_percent_average: x (float number with no '%', eg. 15.0, represent 15.0%)
+                - disk_percent: x (float number with no '%', eg. 15.0, represent 15.0%)
+                - memory_percent: x (float number with no '%', eg. 15.0, represent 15.0%)
+                - net-io-sent: x (float number, eg. 18984, represent 18984 bytes/sec)
+                - net-io-recv: x (float number, eg. 18984, represent 18984 bytes/sec)
+
+-> detailCPU.html
+   |- 【CPU information】 -|
+   【Request】
+        GET /machine/{{ ip }}/cpu/request
+            eg. /machine/172.18.229.251/cpu/request
+        req-args:
+            none
+   【Response】
+        Error: 'Bad Request'
+        Success: return json format data with encoding 'utf-8'
+            format: {'xx': 'xx', 'xx': 'xx', ...}
+            format detail:
+                - time: xxxx-xx-xx xx:xx:xx (x -> number digit, eg. 2016-09-01 19:00:00)
+                - is_server: ['True'|'False'] (represent whether the machine is the server)
+                - ip: xxx.xxx.xxx.xxx (x -> number digit, eg. 192.18.22.1)
+                - average_cpu_percent: x (float number with no '%', eg. 15.0, represent 15.0%)
+                - each_cpu_percent: [x, x, x, ...] (x float number with no '%', eg. 15.0, represent 15.0%)
+                - system: x (float number with no '%', eg. 15.0, represent 15.0%)
+                - idle: x (float number with no '%', eg. 15.0, represent 15.0%)
+                - user: x (float number with no '%', eg. 15.0, represent 15.0%)
+                - nice: x (float number with no '%', eg. 15.0, represent 15.0%)
+
+-> detailDisk.html
+   |- 【Disk information】 -|
+   【Request】
+        GET /machine/{{ ip }}/disk/request
+            eg. /machine/172.18.229.251/disk/request
+        req-args:
+            none
+   【Response】
+        Error: 'Bad Request'
+        Success: return json format data with encoding 'utf-8'
+            format: {'xx': 'xx', 'xx': 'xx', ...}
+            format detail:
+                - time: xxxx-xx-xx xx:xx:xx (x -> number digit, eg. 2016-09-01 19:00:00)
+                - is_server: ['True'|'False'] (represent whether the machine is the server)
+                - ip: xxx.xxx.xxx.xxx (x -> number digit, eg. 192.18.22.1)
+                - disk_percent: x (float number with no '%', eg. 15.0, represent 15.0%)
+                - disk_total: x (float number, eg. 15.0, represent 15.0 GB)
+                - disk_used: x (float number, eg. 15.0, represent 15.0 GB)
+                - disk_free: x (float number, eg. 15.0, represent 15.0 GB)
+                - disk_read_speed: x (float number, eg. 15.0, represent 15.0 bytes/sec)
+                - disk_write_speed: x (float number, eg. 15.0, represent 15.0 bytes/sec)
+
+-> detailMem.html
+   |- 【Memory information】 -|
+   【Request】
+        GET /machine/{{ ip }}/memory/request
+            eg. /machine/172.18.229.251/memory/request
+   【Response】
+        Error: 'Bad Request'
+        Success: return json format data with encoding 'utf-8'
+            format: {'xx': 'xx', 'xx': 'xx', ...}
+            format detail:
+                - time: xxxx-xx-xx xx:xx:xx (x -> number digit, eg. 2016-09-01 19:00:00)
+                - is_server: ['True'|'False'] (represent whether the machine is the server)
+                - ip: xxx.xxx.xxx.xxx (x -> number digit, eg. 192.18.22.1)
+                - vmem_percent: x (float number with no '%', eg. 15.0, represent 15.0%)
+                - vmem_total: x (float number, eg. 15.0, represent 15.0 GB)
+                - vmem_used: x (float number, eg. 15.0, represent 15.0 GB)
+                - vmem_available: x (float number, eg. 15.0, represent 15.0 GB)
+                - vmem_free: x (float number, eg. 15.0, represent 15.0 GB)
+                - swap_percent: x (float number with no '%', eg. 15.0, represent 15.0%)
+                - swap_total: x (float number, eg. 15.0, represent 15.0 GB)
+                - swap_used: x (float number, eg. 15.0, represent 15.0 GB)
+                - swap_free: x (float number, eg. 15.0, represent 15.0 GB)
+
+-> detailNetwork.html
+   |- 【Network information】 -|
+   【Request】
+        GET /machine/{{ ip }}/network/request
+            eg. /machine/172.18.229.251/network/request
+   【Response】
+        Error: 'Bad Request'
+        Success: return json format data with encoding 'utf-8'
+            format: {'xx': 'xx', 'xx': 'xx', ...}
+            format detail:
+                - time: xxxx-xx-xx xx:xx:xx (x -> number digit, eg. 2016-09-01 19:00:00)
+                - is_server: ['True'|'False'] (represent whether the machine is the server)
+                - ip: xxx.xxx.xxx.xxx (x -> number digit, eg. 192.18.22.1)
+                - net_sent_speed: x (float number, eg. 15.0, represent 15.0 bytes/sec)
+                - net_recv_speed: x (float number, eg. 15.0, represent 15.0 bytes/sec)
+                - net_total_recv: x (float number, eg. 233425.0, represent 233425.0 bytes)
+                - net_total_sent: x (float number, eg. 233425.0, represent 233425.0 bytes)
