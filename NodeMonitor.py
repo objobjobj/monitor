@@ -25,6 +25,7 @@ from CollectProcessInfo import CollectProcessInfo
 #      : "auth": doesn't use any id, represents any authenticated user.
 #ZOO_OPEN_ACL_UNSAFE = {"perms":0x1f, "scheme":"world", "id" :"anyone"}
 
+from tendo import singleton
 
 def get_mac_address(): 
     mac = uuid.UUID(int = uuid.getnode()).hex[-12:] 
@@ -206,6 +207,13 @@ if __name__ == "__main__":
     if len(sys.argv) > 1:
         if sys.argv[1] == '-server':
             argv1 = '-server'
+
+    fp = open('program.pid', 'r')
+    try:
+        fcntl.lockf(fp, fcntl.LOCK_EX | fcntl.LOCK_NB)
+    except IOError:
+        sys.stderr.write("another instance is running...\n")
+        sys.exit(0)
 
     daemonize('/dev/null','/tmp/daemon_stdout.log','/tmp/daemon_error.log')  
     main(argv1)
