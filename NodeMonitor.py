@@ -69,8 +69,8 @@ class NodeMonitor:
     def _set_up_server_path(self):
         # the server net card eth1
         self.static_net_card = 'eth1'
-        self.static_path_for_data_3_second_once_time += "Server"
-        self.static_path_for_data_10_second_once_time += "Server"
+        #self.static_path_for_data_3_second_once_time += "Server"
+        #self.static_path_for_data_10_second_once_time += "Server"
         self.static_path_for_data_just_one_time += "Server"
 
     def start_zk(self):
@@ -208,12 +208,12 @@ if __name__ == "__main__":
         if sys.argv[1] == '-server':
             argv1 = '-server'
 
-    fp = open('program.pid', 'r')
-    try:
-        fcntl.lockf(fp, fcntl.LOCK_EX | fcntl.LOCK_NB)
-    except IOError:
-        sys.stderr.write("another instance is running...\n")
-        sys.exit(0)
+    #fp = open('test.txt', 'r')
+    #try:
+    #    fcntl.lockf(fp, fcntl.LOCK_EX | fcntl.LOCK_NB)
+    #except IOError:
+    #    sys.stderr.write("another instance is running...\n")
+    #    sys.exit(0)
 
     daemonize('/dev/null','/tmp/daemon_stdout.log','/tmp/daemon_error.log')  
     main(argv1)
