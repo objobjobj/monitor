@@ -25,7 +25,7 @@ from CollectProcessInfo import CollectProcessInfo
 #      : "auth": doesn't use any id, represents any authenticated user.
 #ZOO_OPEN_ACL_UNSAFE = {"perms":0x1f, "scheme":"world", "id" :"anyone"}
 
-from tendo import singleton
+#from tendo import singleton
 
 def get_mac_address(): 
     mac = uuid.UUID(int = uuid.getnode()).hex[-12:] 
