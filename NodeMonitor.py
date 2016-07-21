@@ -50,9 +50,11 @@ class NodeMonitor:
         self.static_path_for_data_10_second_once_time = "/monitorDataProcessInfo"
         self.static_path_for_data_just_one_time = "/monitorDataJustOneTime"
         
-        if argv1 == '-server':
-            self._set_up_server_path()
+        self.is_server = False
 
+        if argv1 == '-server':
+            self.is_server = True
+            self._set_up_server_path()
         # use mac address to divide different virtual machine
         self.STATIC_NODE_IP_ADDRESS = get_ip_address(self.static_net_card)
         self.STATIC_NODE_MAC_ADDRESS = get_mac_address()
@@ -71,7 +73,7 @@ class NodeMonitor:
         self.static_net_card = 'eth1'
         #self.static_path_for_data_3_second_once_time += "Server"
         #self.static_path_for_data_10_second_once_time += "Server"
-        self.static_path_for_data_just_one_time += "Server"
+        #self.static_path_for_data_just_one_time += "Server"
 
     def start_zk(self):
         #self.zk = KazooClient("127.0.0.1:2181")
@@ -98,7 +100,7 @@ class NodeMonitor:
         t2.start()
     
     def _update_info_once(self):
-        cmi = CollectMachineInfo()
+        cmi = CollectMachineInfo(self.is_server)
         #print self.NODE_ID
         async_obj = self.zk.set_async(self.static_path_for_data_3_second_once_time
             + self.NODE_ID_PATH, (cmi.collectInfo()).encode(encoding="utf-8"))
@@ -148,7 +150,7 @@ class NodeMonitor:
     	#print "just one time to update"
     	self.zk.ensure_path(self.static_path_for_data_just_one_time
             + self.NODE_ID_PATH)
-    	cmi_just_one_time = CollectMachineInfo()
+    	cmi_just_one_time = CollectMachineInfo(self.is_server)
     	async_obj_just_one_time = self.zk.set_async(self.static_path_for_data_just_one_time
             + self.NODE_ID_PATH,
     		(cmi_just_one_time.collectInfoJustOneTime()).encode(encoding="utf-8"))

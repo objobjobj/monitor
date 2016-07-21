@@ -25,7 +25,11 @@ static_all_info_just_one_time = {}
 
 class CollectMachineInfo:
 
+    def __init__(self, is_server):
+        self.is_server = is_server
+
     def collectInfoJustOneTime(self):
+        static_all_info_just_one_time["is_server"] = (self.is_server)
         static_all_info_just_one_time["cpu_count"] = (self._get_cpu_count())
         static_all_info_just_one_time["disk_usage"] = (self._get_disk_usage())
         static_all_info_just_one_time["users"] = (self._get_users())
@@ -41,7 +45,7 @@ class CollectMachineInfo:
             #static_all_info["virtual_memory"].append(self._get_timestamp() + "\t" + self._get_virtual_memory())
 
         #print static_all_info
-
+        static_all_info["is_server"] = {self._get_timestamp():self.is_server}
     	static_all_info["cpu_percent"] = {self._get_timestamp():self._get_cpu_percent()}
         static_all_info["cpu_percent_average"] = {self._get_timestamp():self._get_cpu_percent_average()}
         static_all_info["cpu_times_percent"] = {self._get_timestamp():self._get_cpu_times_percent()}
