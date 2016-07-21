@@ -36,9 +36,9 @@ class GetInfo:
             #print str(children[i])
             #print json.loads(data.decode("utf-8"))
             self.all_info[children[i]] = json.loads(data.decode("utf-8"))
-            #for key in self.all_info[children[i]].keys():
-            #    print key
-            #    print self.all_info[children[i]][key]
+            for key in self.all_info[children[i]].keys():
+                print key
+                print self.all_info[children[i]][key]
             #print self.all_info
         return self.all_info
 

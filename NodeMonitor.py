@@ -40,12 +40,16 @@ class NodeMonitor:
     
     global t
 
-    def __init__(self):
+    def __init__(self, argv1):
+        # the client net card eth0
         self.static_net_card = 'eth0'
         self.static_path_for_data_3_second_once_time = "/monitorData"
         self.static_path_for_data_10_second_once_time = "/monitorDataProcessInfo"
         self.static_path_for_data_just_one_time = "/monitorDataJustOneTime"
         
+        if argv1 == '-server':
+            self._set_up_server_path()
+
         # use mac address to divide different virtual machine
         self.STATIC_NODE_IP_ADDRESS = get_ip_address(self.static_net_card)
         self.STATIC_NODE_MAC_ADDRESS = get_mac_address()
@@ -60,6 +64,8 @@ class NodeMonitor:
         #print self.NODE_ID
 
     def _set_up_server_path(self):
+        # the server net card eth1
+        self.static_net_card = 'eth1'
         self.static_path_for_data_3_second_once_time += "Server"
         self.static_path_for_data_10_second_once_time += "Server"
         self.static_path_for_data_just_one_time += "Server"
@@ -146,13 +152,14 @@ class NodeMonitor:
         async_obj_just_one_time.rawlink(self._update_info_callback)
 
 if __name__ == "__main__":
-    nm = NodeMonitor()
-
     ## set is server or not
+    argv1 = ''
     if len(sys.argv) > 1:
         if sys.argv[1] == '-server':
-            nm._set_up_server_path()
+            argv1 = '-server'
 
+
+    nm = NodeMonitor(argv1)
     nm.start_zk()
     nm._update_info_just_one_time()
     nm.start_update_info()

@@ -48,6 +48,7 @@ class CollectMachineInfo:
         static_all_info["virtual_memory"] = {self._get_timestamp():self._get_virtual_memory()}
         static_all_info["swap_memory"] = {self._get_timestamp():self._get_swap_memory()}
         static_all_info["disk_usage"] = {self._get_timestamp():self._get_disk_usage()}
+        static_all_info["remote_desktop_count"] = {self._get_timestamp():self._get_remote_desktop_count()}
 
         # need to storage to calculate speed
         static_all_info["disk_io"] = static_all_info["disk_io"][1:len(static_all_info["disk_io"])]
@@ -93,6 +94,16 @@ class CollectMachineInfo:
 
     def _get_net_io_recv(self):
         return str(psutil.net_io_counters().bytes_recv)
+
+    def _get_remote_desktop_count(self):
+        count = 0
+        port = 3389
+        records = psutil.net_connections()
+        for record in records:
+            if record.laddr[1] == port and record.status=='ESTABLISHED':
+                count += 1
+        #print count
+        return count
 
     def _get_timestamp(self):
     	return str(int(time.time()))
