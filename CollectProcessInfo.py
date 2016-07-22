@@ -20,7 +20,6 @@ class CollectProcessInfo:
 	def _get_process_info(self):
 		protect_process = {}
 		pids = psutil.pids()
-		res = []
 		#print _array_find(pids, 11111)
 		for pid in pids:
 			p = psutil.Process(pid)
@@ -44,17 +43,11 @@ class CollectProcessInfo:
 			this_p["exe"] = p.exe()
 			this_p["cmd_line"] = p.cmdline()
 			this_p["memory_percent"] = p.memory_percent()
-			protect_process[pid] = this_p
+			protect_process[str(pid)] = this_p
 			#print str(p.name()) + '\t' + str(p.ppid()) + '\t' + str(p.terminal())
-		protect_process = sorted(protect_process.iteritems(),  key=lambda d:protect_process[d[0]]["memory_percent"], reverse = True)
-		cou = 0
-		for i in protect_process:
-			if cou > 10:
-				break;
-			res.append(i)
-			cou += 1
+		#protect_process = sorted(protect_process.iteritems(),  key=lambda d:protect_process[d[0]]["memory_percent"], reverse = True)
 		#print res
-		return res
+		return json.dumps(protect_process)
 		#return ""
 		#result_temp = commands.getoutput("ps -C \"$(xlsclients | cut -d' ' -f3 | paste - -s -d ',')\" --ppid 2 --pid 2 --deselect -o tty,uid,pid,ppid,comm | grep ^\?")
 		#return result_temp

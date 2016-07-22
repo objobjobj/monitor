@@ -144,7 +144,7 @@ class NodeMonitor:
         #print cpi
         #print self.NODE_ID
         async_obj = self.zk.set_async(self.static_path_for_data_10_second_once_time
-            + self.NODE_ID_PATH, (str(cpi._get_process_info())) )
+            + self.NODE_ID_PATH, (cpi._get_process_info()) )
         async_obj.rawlink(self._update_info_callback)
 
     def _update_info_just_one_time(self):
