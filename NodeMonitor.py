@@ -141,9 +141,10 @@ class NodeMonitor:
         
     def _update_info_once_10_second(self):
     	cpi = CollectProcessInfo()
+        #print cpi
         #print self.NODE_ID
         async_obj = self.zk.set_async(self.static_path_for_data_10_second_once_time
-            + self.NODE_ID_PATH, (cpi._get_process_info()).encode(encoding="utf-8"))
+            + self.NODE_ID_PATH, (str(cpi._get_process_info())) )
         async_obj.rawlink(self._update_info_callback)
 
     def _update_info_just_one_time(self):
@@ -164,7 +165,7 @@ def daemonize (stdin='/dev/null', stdout='/dev/null', stderr='/dev/null'):
         if pid > 0:  
             sys.exit(0)   #父进程退出  
     except OSError, e:   
-        sys.stderr.write ("fork #1 failed: (%d) %s\n" % (e.errno, e.strerror) )  
+        #sys.stderr.write ("fork #1 failed: (%d) %s\n" % (e.errno, e.strerror) )  
         sys.exit(1)  
   
      #从母体环境脱离  
@@ -182,7 +183,7 @@ def daemonize (stdin='/dev/null', stdout='/dev/null', stderr='/dev/null'):
         sys.exit(1)  
   
      #进程已经是守护进程了，重定向标准文件描述符  
-  
+'''  
     for f in sys.stdout, sys.stderr: f.flush()  
     si = open(stdin, 'r')  
     so = open(stdout, 'a+')  
@@ -190,12 +191,12 @@ def daemonize (stdin='/dev/null', stdout='/dev/null', stderr='/dev/null'):
     os.dup2(si.fileno(), sys.stdin.fileno())    #dup2函数原子化关闭和复制文件描述符  
     os.dup2(so.fileno(), sys.stdout.fileno())  
     os.dup2(se.fileno(), sys.stderr.fileno())  
-  
+'''  
 # running main  
 def main(argv1):    
-    sys.stdout.write('Node Monitor daemon started with pid %d\n' % os.getpid())  
-    sys.stdout.write('Node Monitor daemon stdout output\n')  
-    sys.stderr.write('Node Monitor daemon stderr output\n')  
+    #sys.stdout.write('Node Monitor daemon started with pid %d\n' % os.getpid())  
+    #sys.stdout.write('Node Monitor daemon stdout output\n')  
+    #sys.stderr.write('Node Monitor daemon stderr output\n')  
 
     nm = NodeMonitor(argv1)
     nm.start_zk()
