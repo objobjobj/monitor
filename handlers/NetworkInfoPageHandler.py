@@ -8,7 +8,8 @@ from helpers.ResourceInfo import ResourceInfo
 class NetworkInfoPageHandler(tornado.web.RequestHandler):
     def get(self, req):
         uri = self.request.uri
-        ip = uri[9:][:-7]
+        ip = uri[9:][:-8]
+        print "network: ", ip
         ri = ResourceInfo()
         ri.start_zk()
         net_info = ri.get_net_info_of(ip)

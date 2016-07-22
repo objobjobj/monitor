@@ -8,13 +8,15 @@ from helpers.ResourceInfo import *
 
 class RequestDaemonInfoHandler(tornado.web.RequestHandler):
     def get(self, req):
-        if True:
-            ri = ResourceInfo()
-            ri.start_zk()
-            general_info = ri.get_general_dynamic_info()
-            ri.stop_zk()
-            self.write(general_info)
-            #self.render("briefmonitor.html")
+        uri = self.request.uri
+        ip = uri[9:][:-15]
+        print "req daemon: ", ip
+        ri = ResourceInfo()
+        ri.start_zk()
+        daemon_info = ri.get_daemon_info_of(ip)
+        # print daemon_info
+        ri.stop_zk()
+        if daemon_info != '{}':
+            self.write(daemon_info)
         else:
-            err_msg = 'Bad Request'
-            self.write(err_msg)
+            self.write("Bad Request")

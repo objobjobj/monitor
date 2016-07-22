@@ -8,7 +8,7 @@ class DiskInfoPageHandler(tornado.web.RequestHandler):
     def get(self, req):
         uri = self.request.uri
         ip = uri[9:][:-5]
-        # print ip
+        print "disk: ", ip
         ri = ResourceInfo()
         ri.start_zk()
         disk_info = ri.get_disk_info_of(ip)
