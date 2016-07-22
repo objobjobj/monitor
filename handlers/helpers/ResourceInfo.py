@@ -409,7 +409,9 @@ class ResourceInfo(object):
         node_path = self.vms_daemon_node + self.slash + str(ip)
         try:
             total_info = self._get_node_info(node_path)
-            print total_info
+            # print total_info
+            return total_info
+
         except KazooException:
             return json.dumps(res_daemon)
 
@@ -420,10 +422,12 @@ if __name__ == "__main__":
     # gi.get_vms_static_info()
     # gi.get_general_dynamic_info()
     # gi.get_cpu_info_of("172.18.229.251")
-    gi.get_memory_info_of("172.18.229.251")
+    # gi.get_memory_info_of("172.18.229.251")
     # gi.get_disk_info_of("172.18.229.251")
     # gi.get_net_info_of("192.168.231.142")
     # gi.get_daemon_info_of("172.18.229.251")
     # a = gi.get_total_cpu_count()
     # print a
+
+    # gi.get_daemon_info_of("192.168.231.142")
 
