@@ -7,6 +7,7 @@
     <link href={{ static_url('css/main.css') }} rel="stylesheet">
     <script src={{ static_url('js/jquery-3.0.0.js') }}></script>
     <script src={{ static_url('js/bootstrap.js') }}></script>
+    <script src={{ static_url('js/briefMoni.js') }}></script>
 
 </head>
 <body>
@@ -33,7 +34,7 @@
                 <table id="hypervisors" class="table table-bordered table-striped">
                     <thead>
                         <tr class="table_caption">
-                            <th class="table_header" colspan="6">
+                            <th class="table_header" colspan="9">
                                 <h3 class="table_header">硬件资源使用情况</h3>
                             </th>
                         </tr>
@@ -79,7 +80,7 @@
 
                     <tfoot>
                         <tr>
-                            <td colspan="8">
+                            <td colspan="9">
                                 <span class="table_count">显示{{ count }}个条目</span>
                             </td>
                         </tr>

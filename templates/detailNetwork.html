@@ -31,7 +31,7 @@
 
         <div class="main_content">
             <div class="page-header">
-                <h2>{{ computer_name }} 资源监控</h2>
+                <h2> <span id="machine_ip">{{ computer_name }}</span> 资源监控</h2>
             </div>
 
             <div class="detail-content">
@@ -42,10 +42,10 @@
 
                 <div class="data-ul-div">
                     <ul id="network-data-ul" class="row-list2">
-                        <li>总接收: <span id="disk-total">10%</span></li>
-                        <li>总发送: <span id="disk-used">10%</span></li>
-                        <li>接收速度: <span id="disk-free">10%</span></li>
-                        <li>发送速度: <span id="disk-used-percent">10%</span></li>
+                        <li>总接收: <span id="recv-total">-</span></li>
+                        <li>总发送: <span id="send_total">-</span></li>
+                        <li>接收速度: <span id="recv-speed">-</span></li>
+                        <li>发送速度: <span id="send-speed">-</span></li>
                     </ul>
                 </div>
             </div>
