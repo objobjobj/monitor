@@ -9,7 +9,7 @@ class CPUInfoPageHandler(tornado.web.RequestHandler):
     def get(self, req):
         uri = self.request.uri
         ip = uri[9:][:-4]
-        print "cpu: ", ip
+        # print "cpu: ", ip
         ri = ResourceInfo()
         ri.start_zk()
         cpu_info = ri.get_cpu_info_of(ip)

@@ -9,7 +9,7 @@ class MemInfoPageHandler(tornado.web.RequestHandler):
     def get(self, req):
         uri = self.request.uri
         ip = uri[9:][:-7]
-        print "memory: ", ip
+        # print "memory: ", ip
         ri = ResourceInfo()
         ri.start_zk()
         memory_info = ri.get_memory_info_of(ip)

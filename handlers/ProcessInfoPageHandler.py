@@ -8,7 +8,7 @@ class ProcessInfoPageHandler(tornado.web.RequestHandler):
     def get(self, req):
         uri = self.request.uri
         ip = uri[9:][:-7]
-        print "daemon: ", ip
+        # print "daemon: ", ip
         ri = ResourceInfo()
         ri.start_zk()
         daemon_info = ri.get_daemon_info_of(ip)

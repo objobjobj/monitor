@@ -19,15 +19,15 @@ class ResourceInfo(object):
     def start_zk(self):
         self.zk = KazooClient(hosts=self.SERVER_IP_AND_PORT)
         self.zk.start()
-        print 'ZooKeeper Client Starting...'
+        # print 'ZooKeeper Client Starting...'
 
     def stop_zk(self):
         self.zk.stop()
-        print 'ZooKeeper Client Stopped.'
+        # print 'ZooKeeper Client Stopped.'
 
     def restart_zk(self):
         self.zk.restart()
-        print 'ZooKeeper Client Restarting...'
+        # print 'ZooKeeper Client Restarting...'
 
     def _get_children_nodes(self, parent_node):
         """Get all the children nodes of parent_node.
@@ -250,7 +250,8 @@ class ResourceInfo(object):
                     res[node.encode("utf-8")] = json.dumps(node_info_encode)
                     # print node_info_encode
         except KazooException:
-            print "No Children Node for the Machine!"
+            # print "No Children Node for the Machine!"
+            pass
 
         # print json.dumps(res)
         return json.dumps(res)

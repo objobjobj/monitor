@@ -10,7 +10,7 @@ class RequestDaemonInfoHandler(tornado.web.RequestHandler):
     def get(self, req):
         uri = self.request.uri
         ip = uri[9:][:-15]
-        print "req daemon: ", ip
+        # print "req daemon: ", ip
         ri = ResourceInfo()
         ri.start_zk()
         daemon_info = ri.get_daemon_info_of(ip)

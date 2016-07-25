@@ -12,5 +12,5 @@ class HomePageHandler(tornado.web.RequestHandler):
         ri.start_zk()
         server_info = json.loads(ri.get_vms_static_info())
         ri.stop_zk()
-        print server_info
+        # print server_info
         self.render("hypervisors.html", instance_info=server_info)

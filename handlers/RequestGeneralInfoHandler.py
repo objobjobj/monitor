@@ -12,7 +12,7 @@ class RequestGeneralInfoHandler(tornado.web.RequestHandler):
             ri = ResourceInfo()
             ri.start_zk()
             general_info = ri.get_general_dynamic_info()
-            print general_info
+            # print general_info
             ri.stop_zk()
             self.write(general_info)
             #self.render("briefmonitor.html")
