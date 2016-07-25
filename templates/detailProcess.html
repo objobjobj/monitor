@@ -8,6 +8,7 @@
     <link href={{ static_url('css/main.css') }} rel="stylesheet">
     <script src={{ static_url('js/jquery-3.0.0.js') }}></script>
     <script src={{ static_url('js/bootstrap.js') }}></script>
+    <script src={{ static_url('js/detailProcess.js') }}></script>
 
 </head>
 <body>
@@ -30,12 +31,51 @@
 
         <div class="main_content">
             <div class="page-header">
-                <h2>{{ computer_name }} 资源监控</h2>
+                <h2> <span id="machine_ip">{{ computer_name }}</span> 资源监控</h2>
             </div>
 
-           <div class="detail-content">
+            <div class="detail-content">
                 <h2 class="detail-title">守护进程</h2>
 
+                <div class="table_wrapper">
+                <table id="daemon-table" class="table table-bordered table-striped">
+                    <thead>
+                        <tr class="table_caption">
+                            <th class="table_header" colspan="4">
+                                <h3 class="table_header">守护进程预览</h3>
+                            </th>
+                        </tr>
+                        <tr>
+                            <th class="sortable normal_column">进程id</th>
+                            <th class="sortable normal_column">进程名</th>
+                            <th class="sortable normal_column">内存占用</th>
+                            <th class="sortable normal_column">程序位置</th>
+
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                    <!--
+                        <tr>
+                            <td class="sortable normal_column"></td>
+                            <td class="sortable normal_column"></td>
+                            <td class="sortable normal_column"></td>
+                            <td class="sortable normal_column"></td>
+                            <td class="sortable normal_column"></td>
+                        </tr>
+                        -->
+                    </tbody>
+
+                    <tfoot>
+                        <tr>
+                            <td colspan="4">
+                                <span class="table_count">显示<span id="record_count">0</span>个条目</span>
+                            </td>
+                        </tr>
+                    </tfoot>
+
+                </table>
+            </div>
                 
             </div>
 

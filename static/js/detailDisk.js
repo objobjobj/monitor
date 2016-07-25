@@ -1,5 +1,19 @@
-var prev = 0
-var curr = 0
+var prev_read = 0
+var curr_read = 0
+
+var prev_write = 0
+var curr_write = 0
+
+function fill_disk_data(data) {
+    var records = eval('(' + data + ')')
+    $("#disk-total").text(records["disk_total"]+"GB")
+    $("#disk-used").text(records["disk_used"]+"GB")
+    $("#disk-free").text(records["disk_free"]+"GB")
+    $("#disk-used-percent").text(records["disk_percent"]+"%")
+    $("#write-speed").text(records["disk_write_speed"]+"byte/s")
+    $("#read-speed").text(records["disk_read_speed"]+"byte/s")
+    
+}
 
 function drawDiskline() {
     $('#disk-charts').highcharts({
@@ -15,8 +29,8 @@ function drawDiskline() {
                     var series2 = this.series[1];
                     setInterval(function () {
                         var x = (new Date()).getTime(), // current time
-                            y = Math.random()*200;
-                            y2 = Math.random()*200;
+                            y = curr_read;
+                            y2 = curr_write;
                         series.addPoint([x, y], true, true);
                         series2.addPoint([x, y2], true, true);
                     }, 1000);
@@ -33,11 +47,11 @@ function drawDiskline() {
         },
         yAxis: {
             title: {
-                text: '读写速度MB/s'
+                text: '读写速度B/s'
             },
             plotLines: [{
                 value: 0,
-                width: 1000,
+                width: 1000*1024*1024,
             }]
         },
         tooltip: {
@@ -105,8 +119,45 @@ function drawDiskline() {
 }
 
 
+function get_disk_data() {
+    var ip = $("#machine_ip").text().trim()
+    $.ajax({
+            type: "GET",
+            url:"/machine/" + ip + "/disk/request",
+            data: null,
+            async: true,
+            dataType: "text",
+            error: function(request) {
+                console.log("connection error");
+                prev_write = curr_write
+                curr_write = 0
+                prev_read = curr_read
+                curr_read = 0
+            },
+            success: function(data) {
+                if (data != null || data != "") {
+                    prev_write = curr_write
+                    prev_read = curr_read
+                    var records = eval('(' + data + ')')
+                    curr_read = Number(records["disk_read_speed"])
+                    curr_write = Number(records["disk_write_speed"])
+                    fill_disk_data(data)
+                } else {
+                    prev_write = curr_write
+                    curr_write = 0
+                    prev_read = curr_read
+                    curr_read = 0
+                }
+               
+            }
+   });
 
+}
 
+function continuously_get_disk_data() {
+    get_disk_data()
+    setTimeout("continuously_get_disk_data()", 1000);
+}
 
 $(document).ready(function() {
     Highcharts.setOptions({
@@ -114,5 +165,6 @@ $(document).ready(function() {
             useUTC: false
         }
     });
+    continuously_get_disk_data()
     drawDiskline();
 });

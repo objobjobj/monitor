@@ -69,7 +69,7 @@ span.brand {
 
 .main_content {
     float: left;
-    min-width: 750px;
+    min-width: 900px;
 }
 
 /*--------------------------------------------*/
@@ -244,15 +244,24 @@ tfoot {
 .row-list li {
     list-style: none;
     float: left;
-    padding-right: 14%;
+    width: 24%;
 }
 
 .data-ul-div {
     padding: 10px;
 }
 
+.row-list {
+    display: block;
+}
+
+.row-list2 {
+    display: block;
+    clear: both;
+}
+
 .row-list2 li {
     list-style: none;
     float: left;
-    padding-right: 8%;
+    width: 20%;
 }

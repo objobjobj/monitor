@@ -31,7 +31,7 @@
 
         <div class="main_content">
             <div class="page-header">
-                <h2>{{ computer_name }} 资源监控</h2>
+                <h2> <span id="machine_ip">{{ computer_name }}</span> 资源监控</h2>
             </div>
 
             <div class="detail-content">
@@ -41,23 +41,27 @@
                     
                 </div>
 
-                <div id="cpu-percnet-data-div" class="data-ul-div">
+                <div id="cpu-percnet-time-div" class="data-ul-div">
+                    <ul id="cpu-percnet-time-ul" class="row-list">
+                        <li>用户态: <span id="us">-</span></li>
+                        <li>系统态: <span id="sy">-</span>&nbsp;</li>
+                        <li>nice: <span id="ni">-</span></li>
+                        <li>空闲: <span id="id">-</span></li>
+                    </ul>
+                </div>
+
+                <div id="cpu-percent-data-div" class="data-ul-div">
+                <!--
                     <ul id="cpu-percnet-data-ul0" class="row-list">
+                    
                         <li>CPU1: <span id="cpu1">10%</span></li>
                         <li>CPU2: <span id="cpu1">10%</span></li>
                         <li>CPU3: <span id="cpu1">10%</span></li>
                         <li>CPU4: <span id="cpu1">10%</span></li>
                     </ul>
+                    -->
                 </div>
 
-                <div id="cpu-percnet-time-div" class="data-ul-div">
-                    <ul id="cpu-percnet-time-ul" class="row-list">
-                        <li>用户态: <span id="us">10%</span></li>
-                        <li>系统态: <span id="sy">10%</span>&nbsp;</li>
-                        <li>nice: <span id="ni">10%</span></li>
-                        <li>空闲: <span id="id">10%</span></li>
-                    </ul>
-                </div>
             </div>
 
             

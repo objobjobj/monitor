@@ -1,5 +1,17 @@
-var prev = 0
-var curr = 0
+var prev_rec = 0
+var curr_rec = 0
+
+var prev_snd = 0
+var curr_snd = 0
+
+function fill_network_data(data) {
+    var records = eval('(' + data + ')')
+    $("#recv-total").text(records["net_total_recv"]+"B")
+    $("#send_total").text(records["net_total_sent"]+"B")
+    $("#recv-speed").text(records["net_recv_speed"]+"B/s")
+    $("#send-speed").text(records["net_sent_speed"]+"B/s")
+    
+}
 
 function drawNetworkline() {
     $('#network-charts').highcharts({
@@ -15,8 +27,8 @@ function drawNetworkline() {
                     var series2 = this.series[1];
                     setInterval(function () {
                         var x = (new Date()).getTime(), // current time
-                            y = Math.random()*200;
-                            y2 = Math.random()*1024;
+                            y = curr_rec;
+                            y2 = curr_snd;
                         series.addPoint([x, y], true, true);
                         series2.addPoint([x, y2], true, true);
                     }, 1000);
@@ -33,7 +45,7 @@ function drawNetworkline() {
         },
         yAxis: {
             title: {
-                text: '收发速度MB/s'
+                text: '收发速度B/s'
             },
             plotLines: [{
                 value: 0,
@@ -105,8 +117,45 @@ function drawNetworkline() {
 }
 
 
+function get_network_data() {
+    var ip = $("#machine_ip").text().trim()
+    $.ajax({
+            type: "GET",
+            url:"/machine/" + ip + "/network/request",
+            data: null,
+            async: true,
+            dataType: "text",
+            error: function(request) {
+                console.log("connection error");
+                prev_rec = curr_rec
+                curr_rec = 0
+                prev_snd = curr_snd
+                curr_snd = 0
+            },
+            success: function(data) {
+                if (data != null || data != "") {
+                    prev_rec = curr_rec
+                    prev_snd = curr_snd
+                    var records = eval('(' + data + ')')
+                    curr_rec = Number(records["net_recv_speed"])
+                    curr_snd = Number(records["net_sent_speed"])
+                    fill_network_data(data)
+                } else {
+                    prev_rec = curr_rec
+                    curr_rec = 0
+                    prev_snd = curr_snd
+                    curr_snd = 0
+                }
+               
+            }
+   });
 
+}
 
+function continuously_get_network_data() {
+    get_network_data()
+    setTimeout("continuously_get_network_data()", 1000);
+}
 
 $(document).ready(function() {
     Highcharts.setOptions({
@@ -114,5 +163,6 @@ $(document).ready(function() {
             useUTC: false
         }
     });
+    continuously_get_network_data();
     drawNetworkline();
 });
