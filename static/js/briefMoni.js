@@ -20,14 +20,16 @@ function fill_data(data) {
             $(curr_tds[4]).text("-")
             $(curr_tds[5]).text("-")
             $(curr_tds[6]).text("-")
-            $($(curr_tds[8]).children('a')[0]).attr("onclick", "return false")
+            $(curr_tds[8]).text("-")
+            $($(curr_tds[9]).children('a')[0]).attr("onclick", "return false")
         } else {
             $(curr_tds[2]).text(resource_data["cpu_percent_average"])
             $(curr_tds[3]).text(resource_data["memory_percent"])
             $(curr_tds[4]).text(resource_data["disk_percent"])
             $(curr_tds[5]).text(resource_data["net_io_sent"])
             $(curr_tds[6]).text(resource_data["net_io_recv"])
-            $($(curr_tds[8]).children('a')[0]).attr("onclick", "return true")
+            $(curr_tds[8]).text(resource_data["remote_desktop_count"])
+            $($(curr_tds[9]).children('a')[0]).attr("onclick", "return true")
         }
         $(curr_tds[7]).text(resource_data["status"])
         if (tmp == 0) {
