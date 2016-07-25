@@ -47,6 +47,7 @@
                             <th class="sortable normal_column">上传网速(Bps)</th>
                             <th class="sortable normal_column">下载网速(Bps)</th>
                             <th class="sortable normal_column">状态</th>
+                            <th class="sortable normal_column">连接数</th>
                             <th class="sortable normal_column">更多</th>
 
                         </tr>
@@ -71,6 +72,7 @@
                             <td class="sortable normal_column">{{ item_temp["net_io_sent"] }}</td>
                             <td class="sortable normal_column">{{ item_temp["net_io_recv"] }}</td>
                             <td class="sortable normal_column">{{ item_temp["status"] }}</td>
+                            <td class="sortable normal_column">{{ item_temp["remote_desktop_count"] }}</td>
                             <td class="sortable normal_column">
                                 <a href="machine/{{ item_temp['ip'] }}/cpu">详情&nbsp;&gt&gt</a>
                             </td>

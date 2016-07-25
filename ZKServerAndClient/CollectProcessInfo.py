@@ -22,29 +22,33 @@ class CollectProcessInfo:
 		pids = psutil.pids()
 		#print _array_find(pids, 11111)
 		for pid in pids:
-			p = psutil.Process(pid)
+			try:
+				p = psutil.Process(pid)
 
-			# if ppid == 1 and ppid doesn't exit in pids, it is not a daemon
-			ppid = p.ppid()
-			if ppid != 1:
-				#print str(p.name()) + '\t' + str(p.ppid()) + '\t' + str(p.terminal())
-				if _array_find(pids, ppid) == True:# or ppid == 0:
+				# if ppid == 1 and ppid doesn't exit in pids, it is not a daemon
+				ppid = p.ppid()
+				if ppid != 1:
+					#print str(p.name()) + '\t' + str(p.ppid()) + '\t' + str(p.terminal())
+					if _array_find(pids, ppid) == True:# or ppid == 0:
+						continue
+
+				if p.terminal() != None:
 					continue
 
-			if p.terminal() != None:
-				continue
+				if not _is_end_with_d_or_daemon(p.name()):
+					continue
 
-			if not _is_end_with_d_or_daemon(p.name()):
+				this_p = {}
+				this_p["id"] = pid
+				this_p["name"] = p.name()
+				this_p["exe"] = p.exe()
+				this_p["cmd_line"] = p.cmdline()
+				this_p["memory_percent"] = p.memory_percent()
+				protect_process[str(pid)] = this_p
+				#print str(p.name()) + '\t' + str(p.ppid()) + '\t' + str(p.terminal())
+			except Exception, e:
+				#print e
 				continue
-
-			this_p = {}
-			this_p["id"] = pid
-			this_p["name"] = p.name()
-			this_p["exe"] = p.exe()
-			this_p["cmd_line"] = p.cmdline()
-			this_p["memory_percent"] = p.memory_percent()
-			protect_process[str(pid)] = this_p
-			#print str(p.name()) + '\t' + str(p.ppid()) + '\t' + str(p.terminal())
 		#protect_process = sorted(protect_process.iteritems(),  key=lambda d:protect_process[d[0]]["memory_percent"], reverse = True)
 		#print res
 		return json.dumps(protect_process)
