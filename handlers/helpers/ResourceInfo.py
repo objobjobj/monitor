@@ -216,6 +216,10 @@ class ResourceInfo(object):
                     disk_usage = node_info_decode["disk_usage"]
                     net_io_sent = node_info_decode["net_io_sent"]
                     net_io_recv = node_info_decode["net_io_recv"]
+                    remote_desktop_count = node_info_decode["remote_desktop_count"]
+                    # print remote_desktop_count
+                    for i in remote_desktop_count:
+                        node_info_encode["remote_desktop_count"] = str(remote_desktop_count[i])
 
                     for i in cpu_percent_average:
                         if (time.time() - float(i)) < 10:
@@ -248,7 +252,7 @@ class ResourceInfo(object):
         except KazooException:
             print "No Children Node for the Machine!"
 
-        print json.dumps(res)
+        # print json.dumps(res)
         return json.dumps(res)
 
     def get_cpu_info_of(self, ip):
@@ -420,7 +424,7 @@ if __name__ == "__main__":
     gi = ResourceInfo()
     gi.start_zk()
     # gi.get_vms_static_info()
-    # gi.get_general_dynamic_info()
+    gi.get_general_dynamic_info()
     # gi.get_cpu_info_of("172.18.229.251")
     # gi.get_memory_info_of("172.18.229.251")
     # gi.get_disk_info_of("172.18.229.251")
